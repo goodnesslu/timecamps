@@ -48,7 +48,7 @@ Hello T.I.M.E Team! I want to confirm my registration for camp.
 Please share the next steps and payment details!`.trim()
 
     // 2. Official Chrisco WhatsApp Number (Uganda format, no plus sign)
-    const whatsappNumber = "256700000000"
+    const whatsappNumber = "14093679280"
 
     // 3. Redirect to WhatsApp
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
