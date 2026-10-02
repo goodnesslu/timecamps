@@ -306,9 +306,7 @@ Please share the next steps and payment details!`.trim()
             size="lg"
             className="mt-6 flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full text-base font-extrabold tracking-wide uppercase shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all hover:shadow-[0_0_50px_rgba(var(--primary),0.8)] disabled:opacity-50"
           >
-            <span>
-              {isSubmitting ? "Opening WhatsApp..." : "Proceed to WhatsApp"}
-            </span>
+            <span>{isSubmitting ? "Opening WhatsApp..." : "Submit"}</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
