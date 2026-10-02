@@ -1,6 +1,5 @@
 "use client"
 
-import ReservationModal from "@/components/ReservationModal"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -395,9 +394,6 @@ export default function AboutPage() {
           </Button>
         </Link>
       </section>
-
-      {/* 8. RESERVATION MODAL (Opens right on this page!) */}
-      <ReservationModal />
     </div>
   )
 }

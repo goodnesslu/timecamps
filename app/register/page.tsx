@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState } from "react"
 import { reservationSchema, type ReservationFormValues } from "@/lib/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
@@ -14,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input"
 
 export default function RegisterPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const form = useForm<ReservationFormValues>({
     resolver: zodResolver(reservationSchema),
     defaultValues: {
@@ -28,6 +31,8 @@ export default function RegisterPage() {
   })
 
   const onSubmit = (data: ReservationFormValues) => {
+    setIsSubmitting(true)
+
     // 1. Format clean WhatsApp message for international & local intake
     const message = `🔥 *T.I.M.E CAMP 2027 REGISTRATION* 🔥
 
@@ -40,7 +45,7 @@ Hello T.I.M.E Team! I want to confirm my registration for camp.
 📞 *Phone:* ${data.phone}
 ⛪ *Church/Fellowship:* ${data.church}
 
-Please share the any next steps!`.trim()
+Please share the next steps and payment details!`.trim()
 
     // 2. Official Chrisco WhatsApp Number (Uganda format, no plus sign)
     const whatsappNumber = "256700000000"
@@ -48,6 +53,8 @@ Please share the any next steps!`.trim()
     // 3. Redirect to WhatsApp
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
+
+    setTimeout(() => setIsSubmitting(false), 2000)
   }
 
   return (
@@ -67,7 +74,8 @@ Please share the any next steps!`.trim()
 
         <p className="text-sm leading-relaxed text-neutral-300 sm:text-base">
           Fill in your details below. Once submitted, you will be redirected to
-          our official WhatsApp desk to receive your confirmation next steps.
+          our official WhatsApp desk to receive your confirmation and next
+          steps.
         </p>
       </div>
 
@@ -92,7 +100,7 @@ Please share the any next steps!`.trim()
                     id={field.name}
                     aria-invalid={fieldState.invalid}
                     placeholder="e.g. Samuel Kigozi"
-                    className="h-12 rounded-full border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                    className="h-12 rounded-full border-white/10 bg-black/40 px-5 text-white placeholder:text-neutral-500"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -114,25 +122,43 @@ Please share the any next steps!`.trim()
                     >
                       Gender (for dorms)
                     </FieldLabel>
-                    <select
-                      {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      className="h-12 w-full rounded-full border border-white/10 bg-black/40 px-3 text-sm font-medium text-white focus:ring-2 focus:ring-primary focus:outline-none"
-                    >
-                      <option
-                        value="Male"
-                        className="bg-neutral-900 text-white"
+                    <div className="relative">
+                      <select
+                        {...field}
+                        id={field.name}
+                        aria-invalid={fieldState.invalid}
+                        className="h-12 w-full appearance-none rounded-full border border-white/10 bg-black/40 px-5 text-sm font-medium text-white focus:ring-2 focus:ring-primary focus:outline-none"
                       >
-                        Male
-                      </option>
-                      <option
-                        value="Female"
-                        className="bg-neutral-900 text-white"
-                      >
-                        Female
-                      </option>
-                    </select>
+                        <option
+                          value="Male"
+                          className="bg-neutral-900 text-white"
+                        >
+                          Male
+                        </option>
+                        <option
+                          value="Female"
+                          className="bg-neutral-900 text-white"
+                        >
+                          Female
+                        </option>
+                      </select>
+                      {/* Custom dropdown arrow for mobile */}
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-neutral-400">
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -157,7 +183,7 @@ Please share the any next steps!`.trim()
                       type="number"
                       aria-invalid={fieldState.invalid}
                       placeholder="e.g. 20"
-                      className="h-12 rounded-full border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                      className="h-12 rounded-full border-white/10 bg-black/40 px-5 text-white placeholder:text-neutral-500"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -185,7 +211,7 @@ Please share the any next steps!`.trim()
                       id={field.name}
                       aria-invalid={fieldState.invalid}
                       placeholder="e.g. Uganda, Kenya, UK"
-                      className="h-12 rounded-full border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                      className="h-12 rounded-full border-white/10 bg-black/40 px-5 text-white placeholder:text-neutral-500"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -210,7 +236,7 @@ Please share the any next steps!`.trim()
                       id={field.name}
                       aria-invalid={fieldState.invalid}
                       placeholder="e.g. Kampala, Jinja, Nairobi"
-                      className="h-12 rounded-full border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                      className="h-12 rounded-full border-white/10 bg-black/40 px-5 text-white placeholder:text-neutral-500"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -220,7 +246,7 @@ Please share the any next steps!`.trim()
               />
             </div>
 
-            {/* PHONE NUMBER (With Country Code recommendation) */}
+            {/* PHONE NUMBER */}
             <Controller
               name="phone"
               control={form.control}
@@ -236,8 +262,8 @@ Please share the any next steps!`.trim()
                     {...field}
                     id={field.name}
                     aria-invalid={fieldState.invalid}
-                    placeholder="e.g. 0755..."
-                    className="h-12 rounded-full border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                    placeholder="Include country code (e.g. +256 7... / 07...)"
+                    className="h-12 rounded-full border-white/10 bg-black/40 px-5 text-white placeholder:text-neutral-500"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -246,7 +272,7 @@ Please share the any next steps!`.trim()
               )}
             />
 
-            {/* CHURCH OR FELLOWSHIP (Not restricted to Chrisco) */}
+            {/* CHURCH OR FELLOWSHIP */}
             <Controller
               name="church"
               control={form.control}
@@ -263,7 +289,7 @@ Please share the any next steps!`.trim()
                     id={field.name}
                     aria-invalid={fieldState.invalid}
                     placeholder="e.g. Chrisco Mbale, Watoto Central, or None"
-                    className="h-12 rounded-full border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                    className="h-12 rounded-full border-white/10 bg-black/40 px-5 text-white placeholder:text-neutral-500"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -276,10 +302,13 @@ Please share the any next steps!`.trim()
           {/* SUBMIT BUTTON */}
           <Button
             type="submit"
+            disabled={isSubmitting}
             size="lg"
-            className="mt-6 flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full text-base font-extrabold tracking-wide uppercase shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all hover:shadow-[0_0_50px_rgba(var(--primary),0.8)]"
+            className="mt-6 flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full text-base font-extrabold tracking-wide uppercase shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all hover:shadow-[0_0_50px_rgba(var(--primary),0.8)] disabled:opacity-50"
           >
-            <span>Submit</span>
+            <span>
+              {isSubmitting ? "Opening WhatsApp..." : "Proceed to WhatsApp"}
+            </span>
             <svg
               viewBox="0 0 24 24"
               fill="none"

@@ -1,6 +1,5 @@
 "use client"
 
-import ReservationModal from "@/components/ReservationModal"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -55,9 +54,6 @@ export default function ComingSoonPage() {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* 3. WHATSAPP MODAL */}
-      <ReservationModal />
     </>
   )
 }
